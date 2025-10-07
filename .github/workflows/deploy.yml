@@ -1,0 +1,37 @@
+name: Deploy to Server
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+    
+    - name: Deploy to server
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.SERVER_HOST }}
+        username: ${{ secrets.SERVER_USER }}
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        script: |
+          cd /home/deploy/nest-cidi || mkdir -p /home/deploy/nest-cidi
+          
+
+          if [ -d ".git" ]; then
+            git pull origin main
+          else
+            git clone https://github.com/laflame102/nest-cidi.git .
+          fi
+          
+          docker-compose down
+          
+          docker-compose build
+          
+          docker-compose up -d
+          
+          docker image prune -f
