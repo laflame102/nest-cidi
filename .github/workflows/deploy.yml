@@ -19,9 +19,11 @@ jobs:
         username: ${{ secrets.SERVER_USER }}
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         script: |
-          cd /home/deploy/nest-cidi || mkdir -p /home/deploy/nest-cidi
+          mkdir -p /home/deploy/nest-cidi
           
 
+          cd /home/deploy/nest-cidi
+          
           if [ -d ".git" ]; then
             git pull origin main
           else
