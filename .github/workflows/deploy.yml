@@ -19,27 +19,26 @@ jobs:
         username: ${{ secrets.SERVER_USER }}
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         script: |
-          # Створюємо директорію якщо не існує
+
           mkdir -p /home/deploy/nest-cidi
           
-          # Переходимо в неї
+
           cd /home/deploy/nest-cidi
           
-          # Клонуємо або оновлюємо репозиторій
+
           if [ -d ".git" ]; then
             git pull origin main
           else
             git clone https://github.com/laflame102/nest-cidi.git .
           fi
-          
-          # Зупиняємо старі контейнери (якщо є)
+
           docker compose down || true
           
-          # Збираємо новий образ
+
           docker compose build
           
-          # Запускаємо контейнери
+
           docker compose up -d
           
-          # Очищаємо старі образи
+
           docker image prune -f
