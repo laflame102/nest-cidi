@@ -24,7 +24,7 @@ jobs:
     - name: run eslint
       run: npm run lint:check
 
-      -name: check formatting
+    - name: check formatting
       run: npm run format:check
 
     - name: Deploy to server
